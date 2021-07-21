@@ -58,12 +58,45 @@
 export default {
   data() {
     return { 
+    todayTask: [],
+    upcoming: [],
+    newTask: "",
     };
   },
   created() { 
+    this.fetchTodayTasks();
+    this.fetchUpcoming();
   },
 
   methods: { 
+  //upcoming tasks
+
+  fetchUpcoming(){
+  fetch("/api/upcoming")
+  .then((res) => res.json())
+  .then(({data}) => {
+  this.upcoming = data;
+  })
+  .catch((err) => console.log(err));
+  },
+
+  //todayTaskMethod
+    fetchTodayTasks(){
+    fetch("api/dailytask", {
+    method: "POST",
+        headers: {
+            'content-type': "application/json"
+        },
+        body: JSON.stringify(task),
+    })
+        .then(() => this.todayTask.unshift(task))
+        catch((err) => console.log(err));
+    },
+
+    addDailyTask(taskId){
+    const task = this.upcoming.filter (({ taskID: id}) => id)
+    }
+  },
   },
 };
 </script>
